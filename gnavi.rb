@@ -20,6 +20,7 @@ array = {}
 json.each do |j|
     array = JSON.parse(j)
 end
+
 client = Line::Bot::Client.new { |config|
     config.channel_secret = "16d4b46218956a056db3c4f4347c8b89"
     config.channel_token = "iHPVoh0hjJevhBJNDV70+ls/K88LAlLmEHifF11gu0ppGsM8QI3r+y3+T/cxzxJOEYRhCLwKTC1a835s6tYFcW6xLcHllGo1Bexsz1ApUrP7RiupYqa+iEqhxyVEp+50K7z6afAVkFdOHzBCbPiqngdB04t89/1O/w1cDnyilFU"
