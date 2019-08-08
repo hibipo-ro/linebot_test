@@ -1,6 +1,9 @@
 class LinebotController < ApplicationController
   require 'line/bot'
 
+  require 'open-uri'
+  require 'json'
+
   protect_from_forgery :except => [:callback]
   def callback
     body = request.body.read
@@ -18,6 +21,31 @@ class LinebotController < ApplicationController
           ##ぐるナビAPI叩いて返す
 
           
+         uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/"
+
+	acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
+
+	format= "json"
+	lat   = 35.670083
+	lon   = 139.763267
+	range = 1
+
+
+	url  = sprintf("%s%s%s%s%s%s%s%s%s%s%s", uri, "?format=", format, "&keyid=", acckey, "&latitude=", lat,"&longitude=",lon,"&range=",range)
+
+	json = open(url)
+	array = {}
+	json.each do |j|
+	    array = JSON.parse(j)
+	end
+
+	array["rest"].each do |rest|
+	     #puts rest["name"]
+	     message = { 'type' => 'text', 'text' => rest["name"] }
+	     response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
+	     puts response
+	end
+
 
           message = {
             type: 'text',
