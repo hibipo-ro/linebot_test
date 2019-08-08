@@ -15,6 +15,10 @@ class LinebotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
+          ##ぐるナビAPI叩いて返す
+
+          
+
           message = {
             type: 'text',
             text: event.message['text']

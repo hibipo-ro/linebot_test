@@ -7,6 +7,9 @@ gem 'bigdecimal'
 gem 'line-bot-api'
 gem 'dotenv-rails'
 
+gem 'json'
+gem 'open_uri_redirections'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
 # Use sqlite3 as the database for Active Record
