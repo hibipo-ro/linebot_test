@@ -3,7 +3,7 @@ class LinereplybotController < ApplicationController
   require 'open-uri'
   require 'json'
 
-  protect_from_forgery :except => [:callback]
+  protect_from_forgery :except => [:replycallback]
   def replycallback
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -41,7 +41,7 @@ class LinereplybotController < ApplicationController
            # }
 
 	url  = sprintf("%s%s%s%s%s%s%s", uri, "?format=", format, "&keyid=", acckey, "&freeword=", freeword)
-	url = URI.encode url
+	purl = URI.encode url
 	p url
 	json = open(url)
 	#array = {}
@@ -79,14 +79,20 @@ class LinereplybotController < ApplicationController
             #}
 	end
 
-message = {
-    "type": "template",
-    "altText": "this is a carousel template",
-    "template": {
-        "type": "carousel",
-        "columns": columns
-    }
-}
+message = [
+    {
+        "type": "template",
+        "altText": "this is a carousel template",
+        "template": {
+            "type": "carousel",
+            "columns": columns
+        }
+    },
+    {
+        "type": "text",
+        "text": "ggggg"
+   }
+]
           #message = {
             #type: 'text',
             #text: event.message['text']
@@ -96,6 +102,8 @@ message = {
 
       #p array
       client.reply_message(event['replyToken'], message)
+#      addmessage = { 'type' => 'text', 'text' => "hogehoge" }
+#      client.reply_message(event['replyToken'], addmessage)
     end
     head :ok
   end
@@ -105,8 +113,8 @@ private
 # LINE Developers登録完了後に作成される環境変数の認証
   def client
     @client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = "16d4b46218956a056db3c4f4347c8b89"
-      config.channel_token = "iHPVoh0hjJevhBJNDV70+ls/K88LAlLmEHifF11gu0ppGsM8QI3r+y3+T/cxzxJOEYRhCLwKTC1a835s6tYFcW6xLcHllGo1Bexsz1ApUrP7RiupYqa+iEqhxyVEp+50K7z6afAVkFdOHzBCbPiqngdB04t89/1O/w1cDnyilFU="
+      config.channel_secret = "a70345a9e77c220adcb1545632bd392f"
+      config.channel_token = "Z3SvuqWIjsaT0CZfjh7zxkVPfUGbCE4X4h58uzc/N+zia3fO7DMdxOSelZlDbRp+p5UE4demIQR2yxaOEfflnqIf4bTj1XOpWbp0G8DnXeTTo44UwLLNInG9fmK8KRwN4tbPKoEAOuhVIRToWda3TAdB04t89/1O/w1cDnyilFU="
     }
   end
 end
