@@ -20,13 +20,9 @@ class LinebotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          ##ぐるナビAPI叩いて返す
-
-          
-         uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/"
-
+        ##ぐるナビAPI叩いて返す
+        uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/"
 	acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
-
 	format= "json"
 	#lat   = 35.670083
 	#lon   = 139.763267
@@ -35,11 +31,6 @@ class LinebotController < ApplicationController
 	#prefname = event.message['text']
 	p event.message['text'] 
 	#range = open(url)
-	
-	#line = {
-         #   type: 'text',
-          #  text: event.message['text']
-           # }
 
 	url  = sprintf("%s%s%s%s%s%s%s", uri, "?format=", format, "&keyid=", acckey, "&freeword=", freeword)
 	url = URI.encode url
@@ -79,6 +70,18 @@ class LinebotController < ApplicationController
             #text: event.message['text']
             #}
 	end
+    cond = []
+    File.open("test.txt", "r+") do |f|
+        #cond = JSON.parse(f.read)
+        cond.push({ 'freeword' => freeword })
+        cond.push({ "lunch" => "1" })
+	json_str = JSON.pretty_generate(cond)
+	#p f.read
+#	p f.read
+#	p hash["Ocean"]
+	f.puts json_str
+    end
+
 
 message = {
     "type": "template",
@@ -100,6 +103,8 @@ message = {
     end
     head :ok
   end
+
+
 
 private
 
