@@ -15,24 +15,35 @@ class LinebotController < ApplicationController
 
     array = {}
     message = {}
+    cond = []
     events.each do |event|
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
         ##ぐるナビAPI叩いて返す
-        uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/"
-	acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
-	format= "json"
-	#lat   = 35.670083
-	#lon   = 139.763267
-	#range = 1
+        acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
+        format= "json"
+        hit_per_page = "10"
+        uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/?keyid=#{acckey}&format=#{format}&hit_per_page=#{hit_per_page}"
 	freeword = event.message['text']
 	#prefname = event.message['text']
-	p event.message['text'] 
+	p 'line からのパラメタ = ' + event.message['text'] 
 	#range = open(url)
+        File.open("test.txt", "r") do |f|
+            cond = JSON.parse(f.read)
+#            p cond
+            cond["freeword"] = freeword
+        end
 
-	url  = sprintf("%s%s%s%s%s%s%s", uri, "?format=", format, "&keyid=", acckey, "&freeword=", freeword)
+        cond_str = ''
+        cond.each do |key, value|
+           p key
+           p value
+           cond_str = cond_str + "&#{key}=#{value}"
+        end
+	#url  = sprintf("%s%s%s%s%s%s%s%s%s", uri, "?format=", format, "&keyid=", acckey, "&freeword=", freeword, "&lunch=", "1")
+        url = uri + cond_str
 	url = URI.encode url
 	p url
 	json = open(url)
@@ -47,7 +58,7 @@ class LinebotController < ApplicationController
 	     #puts rest["name"]
 	     msg = msg + rest["name"] 
 	     message = { 'type' => 'text', 'text' => rest["name"] }
-#	     response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
+	    #response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
 	     #puts response
              columns.push({
                  "thumbnailImageUrl": rest["image_url"]["shop_image1"],
@@ -70,15 +81,8 @@ class LinebotController < ApplicationController
             #text: event.message['text']
             #}
 	end
-    cond = []
     File.open("test.txt", "r+") do |f|
-        #cond = JSON.parse(f.read)
-        cond.push({ 'freeword' => freeword })
-        cond.push({ "lunch" => "1" })
 	json_str = JSON.pretty_generate(cond)
-	#p f.read
-#	p f.read
-#	p hash["Ocean"]
 	f.puts json_str
     end
 
