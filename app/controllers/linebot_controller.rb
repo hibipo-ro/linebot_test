@@ -16,16 +16,16 @@ class LinebotController < ApplicationController
     array = {}
     message = {}
     cond = []
+    acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
+    format= "json"
+    hit_per_page = "10"
+    uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/?keyid=#{acckey}&format=#{format}&hit_per_page=#{hit_per_page}"
     events.each do |event|
       case event
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
         ##ぐるナビAPI叩いて返す
-        acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
-        format= "json"
-        hit_per_page = "10"
-        uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/?keyid=#{acckey}&format=#{format}&hit_per_page=#{hit_per_page}"
 	freeword = event.message['text']
 	#prefname = event.message['text']
 	p 'line からのパラメタ = ' + event.message['text'] 
@@ -87,14 +87,42 @@ class LinebotController < ApplicationController
     end
 
 
-message = {
+message = [
+  {
     "type": "template",
     "altText": "this is a carousel template",
     "template": {
         "type": "carousel",
         "columns": columns
-    }
-}
+	}
+  },
+#  {
+#    "type": "text",
+#    "text": "hogehoge"
+#  }
+       {
+            "type": "template",
+            "altText": "this is a confirm template",
+            "template": {
+                "type": "confirm",
+                "text": "ランチ営業も含みますか？",
+                "actions": [
+                     {
+                       "type": "postback",
+                        "label": "Yes",
+                        "data": "1"
+                      },
+                      {
+                        "type": "postback",
+                        "label": "No",
+                        "data": "0"
+                      }
+                ]
+             }
+        }
+]
+
+
           #message = {
             #type: 'text',
             #text: event.message['text']
@@ -103,14 +131,16 @@ message = {
       end
 
       #p array
-      client.reply_message(event['replyToken'], message)
+      result = client.reply_message(event['replyToken'], message)
+      p result
     end
+
     head :ok
   end
 
 
 
-private
+  private
 
 # LINE Developers登録完了後に作成される環境変数の認証
   def client
