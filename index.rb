@@ -8,6 +8,34 @@ message = { 'type' => 'text', 'text' => 'こんにちは。テキスト応答で
 
 # message = { 'type' => 'image', 'originalContentUrl' => 'https://img.dailyportalz.jp/cache/thumbnails/5ab0a4af7ac3b3f3839a878439281386.jpg', 'previewImageUrl' => 'https://img.dailyportalz.jp/cache/thumbnails/5ab0a4af7ac3b3f3839a878439281386.jpg' }
 
+columns = [];
+columns.push({
+    "thumbnailImageUrl": "https://img.dailyportalz.jp/cache/thumbnails/5ab0a4af7ac3b3f3839a878439281386.jpg",
+    "title": "test desu",
+    "text": "test description",
+    "actions": [{
+        "type": "uri",
+        "label": "動画を再生",
+        "uri": 'https://www.youtube.com/watch?v=XbOkzFadliI'
+    }]
+});
+
+# carouselは最大5つのため、6つ以上の候補はカット
+#if columns.length === 5 then
+#    break;
+#end
+
+message = {
+    "type": "template",
+    "altText": "this is a carousel template",
+    "template": {
+        "type": "carousel",
+        "columns": columns
+    }
+}
+
+
+
 client = Line::Bot::Client.new { |config|
     config.channel_secret = "16d4b46218956a056db3c4f4347c8b89"
     config.channel_token = "iHPVoh0hjJevhBJNDV70+ls/K88LAlLmEHifF11gu0ppGsM8QI3r+y3+T/cxzxJOEYRhCLwKTC1a835s6tYFcW6xLcHllGo1Bexsz1ApUrP7RiupYqa+iEqhxyVEp+50K7z6afAVkFdOHzBCbPiqngdB04t89/1O/w1cDnyilFU"
@@ -16,6 +44,4 @@ client = Line::Bot::Client.new { |config|
 
 response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
 p response
-
-
 
