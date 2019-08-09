@@ -1,11 +1,10 @@
-class LinebotController < ApplicationController
+class LinereplybotController < ApplicationController
   require 'line/bot'
-
   require 'open-uri'
   require 'json'
 
   protect_from_forgery :except => [:callback]
-  def callback
+  def replycallback
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
   #  unless client.validate_signature(body, signature)
