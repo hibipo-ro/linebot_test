@@ -117,13 +117,14 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::Postback # Postbackの場合
           ##ぐるナビAPI叩いて返す
           p event
-#          freeword = event.message['text']
+          lunch = event['postback']['data']
+	  p "lunch= #{lunch}"
           #prefname = event.message['text']
 #          p 'line からのパラメタ = ' + event.message['text'] 
           #range = open(url)
           File.open("test.txt", "r") do |f|
               cond = JSON.parse(f.read)
-#              cond["freeword"] = freeword
+              cond["lunch"] = lunch
           end
 
           cond_str = ''
