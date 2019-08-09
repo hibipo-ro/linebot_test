@@ -33,7 +33,7 @@ class LinebotController < ApplicationController
 	#range = 1
 	freeword = event.message['text']
 	#prefname = event.message['text']
-#	p event.message['text'] 
+	p event.message['text'] 
 	#range = open(url)
 	
 	#line = {
@@ -43,7 +43,7 @@ class LinebotController < ApplicationController
 
 	url  = sprintf("%s%s%s%s%s%s%s", uri, "?format=", format, "&keyid=", acckey, "&freeword=", freeword)
 	url = URI.encode url
-#	p url
+	p url
 	json = open(url)
 	#array = {}
 	json.each do |j|
@@ -51,68 +51,31 @@ class LinebotController < ApplicationController
 	end
 
 	msg = ''
-        columns = [];
+
 	array["rest"].each do |rest|
 	     #puts rest["name"]
-	     msg = msg + rest["image_url"]["shop_image1"] 
-	     message = { 'type' => 'text', 'text' => rest["image_url"]["shop_image1"] }
-	     #message = { 'type' => 'image', 'text' => rest["image_url"]["shop_image1"] }
-	     #message = { 'type' => 'image', 'originalContentUrl' => 'https://img.dailyportalz.jp/cache/thumbnails/5ab0a4af7ac3b3f3839a878439281386.jpg', 'previewImageUrl' => 'https://img.dailyportalz.jp/cache/thumbnails/5ab0a4af7ac3b3f3839a878439281386.jpg' }
-	     #response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
+	     msg = msg + rest["name"] 
+	     message = { 'type' => 'text', 'text' => rest["name"] }
+#	     response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
 	     #puts response
-            columns.push({
-                "thumbnailImageUrl": rest["image_url"]["shop_image1"],
-                "title": rest["name"],
-                "text": rest["tel"],
-                "actions": [
-		{
-		    "type": "uri",
-		    "label": "電話する",
-		    "uri": rest["tel"]
-		},
-		{
-                    "type": "uri",
-                    "label": "お店のページへ",
-#                    "uri": 'https://www.youtube.com/watch?v=XbOkzFadliI'
-                    "uri": rest["url_mobile"]
-                }]
-            });
 
             #message = {
             #type: 'text',
             #text: event.message['text']
             #}
 	end
+msgmsg = { 'type' => 'text', 'text' => msg }
 
-	message = {
-	    "type": "template",
-	    "altText": "this is a carousel template",
-	    "template": {
-		"type": "carousel",
-		"columns": columns
-	    }
-	}
 
-	File.open("text_write_test.json","r+") do |text|
-		
-		hash = { "Ocean" => { "freeword" => freeword ,"word" => freeword }}
-		json_str = JSON.pretty_generate(hash)
-		#p json_str
-		#puts json_str
-		#text.puts json_str  text.read
-		#p text.puts text.read
-	        yomi = text.read 
-		File.open("text_write_test.json",'w'){|file| file = nil}
-		text.puts yomi
-		text.puts json_str
-		#read + text.puts json_str 
-		#p read
-	end
+          #message = {
+            #type: 'text',
+            #text: event.message['text']
+           #}
         end
       end
 
       #p array
-      client.reply_message(event['replyToken'], message)
+      client.reply_message(event['replyToken'], msgmsg)
     end
     head :ok
   end
