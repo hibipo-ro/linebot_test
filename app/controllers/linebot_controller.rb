@@ -51,22 +51,43 @@ class LinebotController < ApplicationController
 	end
 
 	msg = ''
-
+        columns = [];
 	array["rest"].each do |rest|
 	     #puts rest["name"]
 	     msg = msg + rest["name"] 
 	     message = { 'type' => 'text', 'text' => rest["name"] }
 #	     response = client.push_message("Ub8c67cfce315de9e3f841e7a2136f5a8", message)
 	     #puts response
-
+             columns.push({
+                 "thumbnailImageUrl": rest["image_url"]["shop_image1"],
+                 "title": rest["name"],
+                 "text": rest["tel"],
+                 "actions": [
+                 {
+                     "type": "uri",
+                     "label": "電話する",
+                     "uri": "tel://" + rest["tel"]
+		 },
+                 {
+                     "type": "uri",
+                     "label": "お店のページへ",
+                     "uri": rest["url"]
+                 }]
+             });
             #message = {
             #type: 'text',
             #text: event.message['text']
             #}
 	end
-msgmsg = { 'type' => 'text', 'text' => msg }
 
-
+message = {
+    "type": "template",
+    "altText": "this is a carousel template",
+    "template": {
+        "type": "carousel",
+        "columns": columns
+    }
+}
           #message = {
             #type: 'text',
             #text: event.message['text']
@@ -75,7 +96,7 @@ msgmsg = { 'type' => 'text', 'text' => msg }
       end
 
       #p array
-      client.reply_message(event['replyToken'], msgmsg)
+      client.reply_message(event['replyToken'], message)
     end
     head :ok
   end
