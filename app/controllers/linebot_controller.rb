@@ -101,6 +101,13 @@ message = {
     head :ok
   end
 
+
+
+
+
+
+
+
   protect_from_forgery :except => [:callback]
   def callbacks
     body = request.body.read
