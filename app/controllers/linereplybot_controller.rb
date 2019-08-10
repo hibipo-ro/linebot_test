@@ -24,7 +24,7 @@ class LinereplybotController < ApplicationController
           
          uri   = "https://api.gnavi.co.jp/RestSearchAPI/20171214/"
 
-	acckey= "6afcd32694c4130f6a1ce4a7dc21a98b"
+	acckey= "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 	format= "json"
 	#lat   = 35.670083
@@ -113,8 +113,8 @@ private
 # LINE Developers登録完了後に作成される環境変数の認証
   def client
     @client ||= Line::Bot::Client.new { |config|
-      config.channel_secret = "a70345a9e77c220adcb1545632bd392f"
-      config.channel_token = "Z3SvuqWIjsaT0CZfjh7zxkVPfUGbCE4X4h58uzc/N+zia3fO7DMdxOSelZlDbRp+p5UE4demIQR2yxaOEfflnqIf4bTj1XOpWbp0G8DnXeTTo44UwLLNInG9fmK8KRwN4tbPKoEAOuhVIRToWda3TAdB04t89/1O/w1cDnyilFU="
+      config.channel_secret = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+      config.channel_token = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
   end
 end
